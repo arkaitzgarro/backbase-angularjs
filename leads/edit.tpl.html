@@ -1,0 +1,160 @@
+<div class="header-row">
+  <header class="row">
+    <h2 class="header-main col-lg-6">
+        <i class="icon-user"></i> <a ng-href="#/leads/list">Leads</a> /
+        <span ng-switch="action">
+            <span ng-switch-when="NEW">[[actionText]]</span>
+            <span ng-switch-when="EDIT">[[actionText]] [[lead.name]]</span>
+        </span>
+    </h2>
+    <div class="col-lg-6">
+        <span class="pull-right delete" ng-show="isEdit()"> or <a class="btn btn-danger" ng-click="delete()">Delete</a></span>
+        <a class="btn btn-success pull-right" ng-disabled="!canSave()" ng-click="submit()"><i class="icon-save"></i> Save</a>
+        <a class="btn pull-right" ng-href="#/leads/list"> Cancel</a>
+    </div>
+  </header>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header">
+                <h2><i class="icon-edit"></i>Lead edit form</h2>
+            </div>
+            <div class="box-content">
+                <!-- <div ng-repeat="alert in alerts" class="alert alert-[[alert.type]]" ng-animate="{enter: 'enter-animation', leave: 'leave-animation'">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>[[alert.title]]</strong> [[alert.msg]]
+                </div> -->
+                <form class="form-horizontal" name="leadForm" novalidate>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">Customer overview</label>
+                                <p>Some basic information about this customer.</p>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    <div class="col-lg-6" ng-class="getCssClasses(leadForm.name)">
+                                        <label>Name</label>
+                                        <input type="text" name="name" class="form-control" ng-model="lead.name" placeholder="John Doe" required>
+                                        <span class="help-block" ng-show="showError(leadForm.name, 'required')">The name field is required</span>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="customer-first-name">Phone</label>
+                                        <input type="text" class="form-control" placeholder="+0034123456789"  ng-model="lead.phone">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12" ng-class="getCssClasses(leadForm.email)">
+                                        <label>Email</label>
+                                        <input type="email" name="email" class="form-control" placeholder="john.doe@gmail.com" ng-model="lead.email" required>
+                                        <span class="help-block" ng-show="showError(leadForm.email, 'required')">The email field is required</span>
+                                        <span class="help-block" ng-show="showError(leadForm.email, 'email')">The email field is not a valid email</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="checkbox">
+                                            <div class="checker">
+                                                <span><input type="checkbox" ng-model="lead.vip" ng-true-value="1" ng-false-value="0" ng-checked="lead.vip"></span>
+                                            </div>
+                                            This lead is VIP
+                                      </label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label class="checkbox">
+                                            <div class="checker">
+                                                <span><input type="checkbox" ng-model="lead.agency" ng-true-value="1" ng-false-value="0" ng-checked="lead.agency"></span>
+                                            </div>
+                                            This lead is an AGENCY
+                                      </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">Aditional info</label>
+                                <p>Add aditional info relating to this lead.</p>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="customer-first-name">Country</label>
+                                        <input type="text" class="form-control" ng-model="lead.country" typeahead="country.name for country in countries | filter:$viewValue | limitTo:8">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label for="customer-first-name">Complete address</label>
+                                        <input type="text" class="form-control" ng-model="lead.address">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="customer-first-name">City</label>
+                                        <input type="text" class="form-control" ng-model="lead.city">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="customer-first-name">Postal / Zip Code</label>
+                                        <input type="text" class="form-control" ng-model="lead.zipCode">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="customer-first-name">Company</label>
+                                        <input type="text" class="form-control" ng-model="lead.company">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">Account password</label>
+                                <p>Change lead password.</p>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="customer-first-name">Password</label>
+                                        <input type="password" class="form-control" ng-model="password">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="customer-first-name">Repeat password</label>
+                                        <input type="password" class="form-control" ng-model="repeatPassword">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">Notes</label>
+                                <p>Enter any extra notes relating to this lead.</p>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <textarea placeholder="Enter a note about the customer..." ng-model="lead.notes"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="row footer-row">
+                        <div class="col-lg-9 col-lg-offset-3">
+                            <a class="btn btn-success pull-left" ng-disabled="!canSave()" ng-click="submit()"><i class="icon-save"></i> Save</a>
+                            <a  class="btn pull-left" ng-href="#/leads/list"> Cancel</a>
+                            <span class="pull-left delete" ng-show="isEdit()"> or <a class="btn btn-danger" ng-click="delete()">Delete</a></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="header-row">
+  <header class="row">
+    <h2 class="header-main col-lg-6"><i class="icon-user"></i> Leads</h2>
+    <div class="col-lg-6">
+        <a  class="btn btn-success pull-right" ng-href="#/leads/new"><i class="icon-plus"></i> Add new lead</a>
+    </div>
+  </header>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header" data-original-title="">
+                <h2> <i class="icon-align-justify"></i>
+                    <span class="break"></span>
+                    Leads list
+                </h2>
+            </div>
+            <div class="box-content">
+                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="dataTables_filter">
+                                <label>
+                                    Search:
+                                    <input type="search" ng-model="criteria"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable" id="DataTables_Table_0">
+                        <thead>
+                            <tr role="row">
+                                <th ng-class="{'sorting_asc' : isSortUp('name'), 'sorting_desc': isSortDown('name'), 'sorting' : notSorting('name')}" role="columnheader" rowspan="1" colspan="1" style="width: 242px;" ng-click="sort('name')">Name</th>
+                                <th ng-class="{'sorting_asc' : isSortUp('email'), 'sorting_desc': isSortDown('email'), 'sorting' : notSorting('email')}" role="columnheader" rowspan="1" colspan="1" style="width: 261px;" ng-click="sort('email')">Email</th>
+                                <th ng-class="{'sorting_asc' : isSortUp('phone'), 'sorting_desc': isSortDown('phone'), 'sorting' : notSorting('phone')}" role="columnheader" rowspan="1" colspan="1" style="width: 149px;" ng-click="sort('phone')">Phone</th>
+                                <th ng-class="{'sorting_asc' : isSortUp('vip'), 'sorting_desc': isSortDown('vip'), 'sorting' : notSorting('vip')}" role="columnheader" rowspan="1" colspan="1" style="width: 78px;" ng-click="sort('vip')">VIP</th>
+                                <th role="columnheader" rowspan="1" colspan="1" style="width: 193px;">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody role="alert">
+                            <tr ng-repeat="lead in filteredLeads = (leads | filter:criteria | orderBy:sortField:reverse) | pagination:bigCurrentPage:itemsPerPage">
+                                <td><a ng-href="#/leads/view/[[lead.id]]">[[lead.name]]</a></td>
+                                <td><a href="mailto:[[lead.email]]" target="_blank">[[lead.email]]</a></td>
+                                <td>[[lead.phone]]</td>
+                                <td class="center">
+                                    <i class="icon-star" ng-if="lead.vip"></i>
+                                </td>
+                                <td>
+                                    <a class="label label-info" ng-href="#/leads/view/[[lead.id]]"><i class="icon-eye-open"></i> show</a>
+                                    <a class="label label-warning" ng-href="#/leads/edit/[[lead.id]]"><i class="icon-edit"></i> edit</a>
+                                    <a class="label label-danger" href="" ng-click="delete(lead)"><i class="icon-remove"></i> delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="dataTables_info" id="DataTables_Table_0_info">Showing [[filteredLeads.length]] entries</div>
+                        </div>
+                        <div class="col-lg-9 center">
+                            <pagination total-items="bigTotalItems" page="bigCurrentPage" max-size="maxSize" class="pagination-small" boundary-links="true" rotate="false" num-pages="numPages" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/col-->
+</div>
